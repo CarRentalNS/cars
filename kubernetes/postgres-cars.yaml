@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-cars-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-cars
+  template:
+    metadata:
+      labels:
+        app: postgres-cars
+    spec:
+      containers:
+        - image: centos/postgresql-94-centos7
+          name: postgres-cars
+          env:
+            - name: POSTGRESQL_USER
+              value: dbuser
+            - name: POSTGRESQL_PASSWORD
+              value: postgres
+            - name: POSTGRESQL_DATABASE
+              value: cars
+          ports:
+          - containerPort: 5432
+            protocol: TCP

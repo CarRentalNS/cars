@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cars-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cars
+  template:
+    metadata:
+      labels:
+        app: cars
+    spec:
+      containers:
+      - image: nemanjas23/cars:0.1
+        name: cars
+        imagePullPolicy: "Always"
+        env:
+          - name: KUMULUZEE_DISCOVERY_CLUSTER
+            value: bluemix
+          - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_CONFIG_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+            value: jdbc:postgresql://postgres-cars:5432/cars
+          - name: KUMULUZEE_DATASOURCES0_USERNAME
+            value: dbuser
+          - name: KUMULUZEE_DATASOURCES0_PASSWORD
+            value: postgres
+        ports:
+        - containerPort: 8080
+          name: server
+          protocol: TCP
+
